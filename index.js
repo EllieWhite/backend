@@ -1,6 +1,6 @@
 const yargs = require('yargs');
 const { hideBin } = require('yargs/helpers');
-const { addNote, getNotes } = require('./notes.controller').default
+const { addNote, getNotes, printNotes, removeNote } = require('./notes.controller').default
 
 yargs(hideBin(process.argv))
     .command({
@@ -22,6 +22,20 @@ yargs(hideBin(process.argv))
         describe: 'print all notes',
         async handler() {
          printNotes()
+        }
+    })
+    .command({
+        command: 'remove',
+        describe: 'Remove note by id',
+        builder: {
+            id: {
+                type: 'string',
+                describe: 'id',
+                demandOption: true
+            }
+        },
+        handler({ id }) {
+            removeNote(id)
         }
     })
 

@@ -22,8 +22,6 @@ async function addNote(title) {
     console.log(chalk.green.inverse('Note wass Added'))
 }
 
-addNote('Test')
-
 async function getNotes() {
     const notes = await fs.readFile(notesPath, { encoding: 'utf-8'})
     return Array.isArray(JSON.parse(notes)) ? JSON.parse(notes) : []
@@ -33,10 +31,23 @@ async function printNotes() {
     const notes = await getNotes()
     console.log(chalk.bgBlue('Here is the list of notes:'))
     notes.forEach(note => {
-        console.log(chalk.blue(note.title))
+        console.log(chalk.blue(note.id, note.title))
     })
 }
 
+async function removeNote(id) {
+    const notes = await getNotes()
+    const index = notes.findIndex(note => note.id === id)
+    if(index !== -1) {
+        notes.splice(index, 1)
+        await fs.writeFile(notesPath, JSON.stringify(notes))
+        console.log(chalk.green.inverse('Note was deleted'))
+    } else {
+        console.log(chalk.red.inverse('Note not found'))
+    }
+
+}
+
 export default {
-    addNote, getNotes, printNotes
+    addNote, getNotes, printNotes, removeNote
 }
