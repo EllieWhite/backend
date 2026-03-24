@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= title %></title>
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+<body class="text-center flex flex-col justify-center gap-20">
+    <% if (created) {%>
+        <div class="bg-green-300 p-4">
+            <p>Note is added</p>
+        </div>
+
+    <% } %>
+    <h1 class="text-3xl font-bold underline">
+      Hello world!
+    </h1>
+    <form action="/" method="POST" class="w-100 ml-auto mr-auto">
+        <div  class="flex flex-col gap-2">
+            <input type="text" name="title" class="border" required>
+            <button type="submit" class="bg-blue-500 p-2 text-white text-xl rounded-md cursor-pointer">create</button>
+        </div>
+    </form>
+
+    <aside>
+        <h2 class="text-xl">Заметки:</h2>
+         <% if (notes && notes.length>0) {%>
+            <ul class="mt-2 w-100 mx-auto">
+                <% for (let i = 0; i < notes.length; i++) { %>
+                    <li class="flex justify-between mt-2 border rounded-md">
+                        <%= notes[i].title%>
+                        <button data-type="remove" data-id="<%= notes[i].id %>" class="bg-red-500 px-4 py-2 border border-color-red-900 rounded-md cursor-pointer">х</button>
+                    </li>
+                <% } %>
+            </ul>
+            <% } else { %>
+                <p>нет заметок</p>
+            <% } %>
+    </aside>
+
+    <script src="/app.js"></script>
+</body>
+</html>

@@ -9,7 +9,7 @@ const __dirname = dirname(__filename)
 const notesPath = join(__dirname, 'db.json')
 
 
-async function addNote(title) {
+const addNote = async (title) =>  {
     const notes = await getNotes()
     const note = {
         title,
@@ -22,12 +22,12 @@ async function addNote(title) {
     console.log(chalk.green.inverse('Note wass Added'))
 }
 
-async function getNotes() {
+const getNotes = async () => {
     const notes = await fs.readFile(notesPath, { encoding: 'utf-8'})
     return Array.isArray(JSON.parse(notes)) ? JSON.parse(notes) : []
 }
 
-async function printNotes() {
+const printNotes = async () =>  {
     const notes = await getNotes()
     console.log(chalk.bgBlue('Here is the list of notes:'))
     notes.forEach(note => {
@@ -35,7 +35,7 @@ async function printNotes() {
     })
 }
 
-async function removeNote(id) {
+ const removeNote = async (id) => {
     const notes = await getNotes()
     const index = notes.findIndex(note => note.id === id)
     if(index !== -1) {
@@ -48,6 +48,6 @@ async function removeNote(id) {
 
 }
 
-export default {
+export {
     addNote, getNotes, printNotes, removeNote
 }

@@ -1,71 +1,81 @@
-const yargs = require('yargs');
-const { hideBin } = require('yargs/helpers');
-const { addNote, getNotes, printNotes, removeNote } = require('./notes.controller').default
-const mongoose = require('mongoose')
+import chalk from 'chalk'
+import { dirname } from 'path';
+import { fileURLToPath } from 'url'
+import express from 'express';
+import path from "node:path";
 
-mongoose.connect(
-    'mongodb+srv://dianalyutaya12_db_user:qqqqqqqq@cluster0.tckqa1m.mongodb.net/notes?appName=Cluster0'
-).then(() => {
-    
+import { addNote, getNotes, removeNote } from './notes.controller.js';
+
+const app = express() 
+
+const port = 3000;
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
+
+app.set('view engine', 'ejs')
+app.set('views', 'pages')
+
+app.use(express.static(path.resolve(__dirname, 'public')))
+app.use(express.urlencoded({
+    extended: true
+}))
+
+//const basePath = join(__dirname, 'pages')
+//const server = http.createServer(async(req, res) => {
+//    if(req.method === "GET") {
+//        const content = await fs.readFile(join(basePath, 'index.html'))
+//        res.writeHead(200, {
+//            'Content-Type': 'text/html'
+//        })
+//       res.writeHead(404)
+//        res.end(content)
+//    } else if (req.method === "POST") {
+//
+//        const body = []
+//        res.writeHead(200, {
+//            'Content-type': 'text/plain; charset=utf-8'
+//        })
+//
+//        req.on('data', data => {
+//            body.push(Buffer.from(data))
+//        })
+//
+//        req.on('end', () => {
+//            const title = body.toString().split('=')[1].replaceAll('+', ' ');
+//            addNote(title)
+//        }) 
+//        res.end('Post success')
+//    }
+//})
+
+app.get('/', async (req, res) => {
+    res.render('index', {
+        title: 'Express App',
+        notes: await getNotes(),
+        created: false
+    })
 })
 
+app.post('/', async (req, res) => {
+    addNote(req.body.title)
+    res.render('index', {
+        title: 'Express App',
+        notes: await getNotes(),
+        created: true
+    })
 
+})
 
+app.delete('/:id', async (req, res) => {
+    await removeNote(req.params.id)
+      res.render('index', {
+        title: 'Express App',
+        notes: await getNotes(),
+        created: false
+    })
+}) 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// yargs(hideBin(process.argv))
-//     .command({
-//         command: 'add',
-//         describe: 'Add new note to list',
-//         builder: {
-//             title: {
-//                 type: 'string',
-//                 describe: 'Title',
-//                 demandOption: true
-//             }
-//         },
-//         handler({ title }) {
-//             addNote(title)
-//         }
-//     })
-//     .command({
-//         command: 'list',
-//         describe: 'print all notes',
-//         async handler() {
-//          printNotes()
-//         }
-//     })
-//     .command({
-//         command: 'remove',
-//         describe: 'Remove note by id',
-//         builder: {
-//             id: {
-//                 type: 'string',
-//                 describe: 'id',
-//                 demandOption: true
-//             }
-//         },
-//         handler({ id }) {
-//             removeNote(id)
-//         }
-//     })
-
-// .parse()
+app.listen(port, () => {
+    console.log(chalk.green(`Server has been started on port ${port}`))
+})
