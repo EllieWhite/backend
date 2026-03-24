@@ -26,11 +26,14 @@
     <aside>
         <h2 class="text-xl">Заметки:</h2>
          <% if (notes && notes.length>0) {%>
-            <ul class="mt-2 w-100 mx-auto">
+            <ul class="mt-2 w-200 mx-auto">
                 <% for (let i = 0; i < notes.length; i++) { %>
-                    <li class="flex justify-between mt-2 border rounded-md">
-                        <%= notes[i].title%>
-                        <button data-type="remove" data-id="<%= notes[i].id %>" class="bg-red-500 px-4 py-2 border border-color-red-900 rounded-md cursor-pointer">х</button>
+                    <li class="flex justify-between items-center mt-2 border border-gray-300 rounded-md py-1">
+                        <p class="p-2"><%= notes[i].title%></p>
+                        <div class="flex gap-1">
+                            <button data-type="edit" data-id="<%= notes[i].id %>" class="bg-blue-500 text-white px-4 py-2 rounded-l-md cursor-pointer">Редактировать</button>
+                            <button data-type="remove" data-id="<%= notes[i].id %>" class="bg-red-500 text-white px-4 py-2 rounded-r-md cursor-pointer">х</button>
+                        </div>
                     </li>
                 <% } %>
             </ul>

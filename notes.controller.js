@@ -35,7 +35,7 @@ const printNotes = async () =>  {
     })
 }
 
- const removeNote = async (id) => {
+const removeNote = async (id) => {
     const notes = await getNotes()
     const index = notes.findIndex(note => note.id === id)
     if(index !== -1) {
@@ -45,9 +45,23 @@ const printNotes = async () =>  {
     } else {
         console.log(chalk.red.inverse('Note not found'))
     }
+}
 
+async function saveNotes(notes) {
+  await fs.writeFile(notesPath, JSON.stringify(notes))
+}
+
+
+const replaceNote = async (noteData) => {
+    const notes = await getNotes()
+    const index = notes.findIndex(note => note.id === noteData.id)
+    if (index >= 0) {
+        notes[index] = { ...notes[index], ...noteData }
+        await saveNotes(notes)
+        console.log(chalk.bgGreen(`Note with id="${noteData.id}" has been updated!`))
+    }
 }
 
 export {
-    addNote, getNotes, printNotes, removeNote
+    addNote, getNotes, printNotes, removeNote, replaceNote
 }
