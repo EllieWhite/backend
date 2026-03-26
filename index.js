@@ -3,11 +3,11 @@ import { dirname } from 'path';
 import { fileURLToPath } from 'url'
 import express from 'express';
 import path from "node:path";
+import mongoose from 'mongoose';
 
 import { addNote, getNotes, removeNote, replaceNote } from './notes.controller.js';
 
-const app = express() 
-
+const app = express();
 const port = 3000;
 
 const __filename = fileURLToPath(import.meta.url)
@@ -55,18 +55,29 @@ app.get('/', async (req, res) => {
     res.render('index', {
         title: 'Express App',
         notes: await getNotes(),
-        created: false
+        created: false,
+        error: false
     })
 })
 
 app.post('/', async (req, res) => {
-    addNote(req.body.title)
-    res.render('index', {
-        title: 'Express App',
-        notes: await getNotes(),
-        created: true
-    })
-
+    try {
+        addNote(req.body.title)
+        res.render('index', {
+            title: 'Express App',
+            notes: await getNotes(),
+            created: true,
+            error: false
+        })
+    } catch(e) {
+        console.error('creation error', e)
+         res.render('index', {
+            title: 'Express App',
+            notes: await getNotes(),
+            created: false,
+            error: true
+        })
+    }
 })
 
 app.delete('/:id', async (req, res) => {
@@ -74,7 +85,8 @@ app.delete('/:id', async (req, res) => {
       res.render('index', {
         title: 'Express App',
         notes: await getNotes(),
-        created: false
+        created: false,
+        error: false
     })
 }) 
 
@@ -87,6 +99,15 @@ app.put('/:id', async (req, res) => {
     })
 }) 
 
-app.listen(port, () => {
-    console.log(chalk.green(`Server has been started on port ${port}`))
+mongoose.connect(
+    'mongodb+srv://dianalyutaya12_db_user:6zv&pQgS3GqV@cluster0.tckqa1m.mongodb.net/notes?appName=Cluster0'
+).then(() => {
+
+    app.listen(port, () => {
+        console.log(chalk.green(`Server has been started on port ${port}`))
+    })
 })
+
+//app.listen(port, () => {
+//    console.log(chalk.green(`Server has been started on port ${port}`))
+//})

@@ -11,7 +11,12 @@
         <div class="bg-green-300 p-4">
             <p>Note is added</p>
         </div>
+    <% } %>
 
+    <% if (error) {%>
+        <div class="bg-red-300 p-4">
+            <p class="text-red-800">Something went wrong!</p>
+        </div>
     <% } %>
     <h1 class="text-3xl font-bold underline">
       Hello world!
