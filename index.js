@@ -6,6 +6,7 @@ import path from "node:path";
 import mongoose from 'mongoose';
 
 import { addNote, getNotes, removeNote, replaceNote } from './notes.controller.js';
+import addUser from './users.controller.js';
 
 const app = express();
 const port = 3000;
@@ -51,6 +52,26 @@ app.use(express.urlencoded({
 //    }
 //})
 
+app.get('/register', async (req, res) => {
+    res.render('register', {
+        title: 'Express App',
+        error: undefined
+    })
+})
+ 
+app.post('/register', async (req, res) => {
+    try {
+        await addUser(req.body.email, req.body.password);
+        res.redirect('/login')
+    } catch (e) {
+        console.log(e);
+        res.render('register', {
+        title: 'Express App',
+        error: e.message
+    })
+    }
+})
+ 
 app.get('/', async (req, res) => {
     res.render('index', {
         title: 'Express App',

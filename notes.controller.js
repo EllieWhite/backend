@@ -1,5 +1,5 @@
-import chalk from 'chalk'
-import Note from './models/Note.js'
+import chalk from 'chalk';
+import Note from './models/Note.js';
 
 
 const addNote = async (title) =>  {
