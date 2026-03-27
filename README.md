@@ -116,3 +116,21 @@ Mongo DB - одна из популярных документоориентир
 
     Для авторизации часто применяется RBAC - (Role-Based Access Control) - это модель управления доступом, в которой доступ к ресурсам
         и функциям системы определяется на сонове ролей пользователя.
+
+
+**Шифрование пароля**
+
+    Использование пакета bctypt для шифрования паролей:
+        npm i bcrypt
+
+        //controllers.js
+            import bcrypt from 'bcrypt';
+
+            const addUser = async (email, password) => {
+                const passwordHash = await bcrypt.hash(password, 10)
+                await User.create({ email, password: passwordHash });
+            }
+            export default addUser
+        Есть синхронная и асинхронная версия хеширования.
+
+        Соль - это собственная комбинация символов к каждому паролю.

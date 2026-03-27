@@ -64,11 +64,17 @@ app.post('/register', async (req, res) => {
         await addUser(req.body.email, req.body.password);
         res.redirect('/login')
     } catch (e) {
-        console.log(e);
+        if (e.code === 11000) {
+            res.render('register', {
+            title: 'Express App',
+            error: 'Email is already register'
+        })
+            return
+        }
         res.render('register', {
-        title: 'Express App',
-        error: e.message
-    })
+            title: 'Express App',
+            error: e.message
+        })
     }
 })
  
