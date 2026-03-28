@@ -2,8 +2,8 @@ import chalk from 'chalk';
 import Note from './models/Note.js';
 
 
-const addNote = async (title) =>  {
-    await Note.create({ title })
+const addNote = async (title, owner) =>  {
+    await Note.create({ title, owner })
     console.log(chalk.green.inverse('Note wass Added'))
 }
 

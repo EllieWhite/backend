@@ -113,7 +113,7 @@ app.get('/', async (req, res) => {
 
 app.post('/', async (req, res) => {
     try {
-        addNote(req.body.title)
+       await addNote(req.body.title, req.user.email)
         res.render('index', {
             title: 'Express App',
             notes: await getNotes(),

@@ -35,6 +35,7 @@
                 <% for (let i = 0; i < notes.length; i++) { %>
                     <li class="flex justify-between items-center mt-2 border border-gray-300 rounded-md py-1">
                         <p class="p-2"><%= notes[i].title%></p>
+                        <span><%= notes[i].owner%></span>
                         <div class="flex gap-1">
                             <button data-type="edit" data-id="<%= notes[i].id %>" class="bg-blue-500 text-white px-4 py-2 rounded-l-md cursor-pointer">Редактировать</button>
                             <button data-type="remove" data-id="<%= notes[i].id %>" class="bg-red-500 text-white px-4 py-2 rounded-r-md cursor-pointer">х</button>

@@ -5,7 +5,11 @@ const auth = (req, res, next) => {
     const token = req.cookies.token;
     try {
         const verifyResult = jwt.verify(token, JWT_SECRET)
-            console.log(verifyResult)
+        console.log(verifyResult)
+        req.user = {
+            email: verifyResult.email
+        }
+        
         next()
     } catch(e) {
         res.redirect('/login')
