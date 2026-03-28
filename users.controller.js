@@ -1,8 +1,7 @@
 import jwt from "jsonwebtoken";
 import User from "./models/User.js";
 import bcrypt from 'bcrypt';
-
-const JWT_SECRET = 'test';
+import JWT_SECRET from './constants.js'
 
 const addUser = async (email, password) => {
     const passwordHash = await bcrypt.hash(password, 10)

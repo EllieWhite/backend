@@ -8,6 +8,7 @@ import cookieParser from 'cookie-parser';
 
 import { addNote, getNotes, removeNote, replaceNote } from './notes.controller.js';
 import { addUser, loginUser } from './users.controller.js';
+import auth from './middlewares/auth.js';
 
 const app = express();
 const port = 3000;
@@ -98,7 +99,9 @@ app.post('/register', async (req, res) => {
         })
     }
 })
- 
+
+app.use(auth);
+
 app.get('/', async (req, res) => {
     res.render('index', {
         title: 'Express App',
