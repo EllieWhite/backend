@@ -4,9 +4,10 @@ import { fileURLToPath } from 'url'
 import express from 'express';
 import path from "node:path";
 import mongoose from 'mongoose';
+import cookieParser from 'cookie-parser';
 
 import { addNote, getNotes, removeNote, replaceNote } from './notes.controller.js';
-import addUser from './users.controller.js';
+import { addUser, loginUser } from './users.controller.js';
 
 const app = express();
 const port = 3000;
@@ -18,12 +19,11 @@ app.set('view engine', 'ejs')
 app.set('views', 'pages')
 
 app.use(express.json())
-
 app.use(express.static(path.resolve(__dirname, 'public')))
 app.use(express.urlencoded({
     extended: true
 }))
-
+app.use(cookieParser())
 //const basePath = join(__dirname, 'pages')
 //const server = http.createServer(async(req, res) => {
 //    if(req.method === "GET") {
@@ -57,6 +57,27 @@ app.get('/register', async (req, res) => {
         title: 'Express App',
         error: undefined
     })
+})
+ 
+app.get('/login', async (req, res) => {
+    res.render('login', {
+        title: 'Express App',
+        error: undefined
+    })
+})
+
+app.post('/login', async (req, res) => {
+    try {
+        const token = await loginUser(req.body.email, req.body.password);
+
+        res.cookie('token', token)
+        res.redirect('/')
+    } catch (e) {
+        res.render('login', {
+        title: 'Express App',
+        error: e.message
+    })
+    }
 })
  
 app.post('/register', async (req, res) => {
