@@ -7,7 +7,7 @@ const auth = (req, res, next) => {
         const verifyResult = jwt.verify(token, JWT_SECRET)
         console.log(verifyResult)
         req.user = {
-            email: verifyResult.email
+            email: verifyResult.email,
         }
         
         next()

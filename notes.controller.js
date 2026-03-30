@@ -21,14 +21,20 @@ const printNotes = async () =>  {
     })
 }
 
-const removeNote = async (id) => {
-    await Note.deleteOne({_id: id})
+const removeNote = async (id, owner) => {
+    const result = await Note.deleteOne({_id: id, owner})
     console.log(chalk.red.inverse('Note not found'))
+     if(result.matchedCount === 0) {
+            throw new Error('No note delete')
+        }
     
 }
 
-const replaceNote = async (noteData) => {
-    await Note.updateOne({_id: noteData.id}, {title: noteData.title})
+const replaceNote = async (noteData, owner) => {
+    const result =  await Note.updateOne({_id: noteData.id, owner}, {title: noteData.title})
+        if(result.matchedCount === 0) {
+            throw new Error('No note edit')
+        }
 }
 
 export {
