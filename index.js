@@ -1,3 +1,4 @@
+require('dotenv').config();
 import chalk from 'chalk'
 import { dirname } from 'path';
 import { fileURLToPath } from 'url'
@@ -178,7 +179,7 @@ app.put('/:id', async (req, res) => {
 }) 
 
 mongoose.connect(
-    'mongodb+srv://dianalyutaya12_db_user:6zv&pQgS3GqV@cluster0.tckqa1m.mongodb.net/notes?appName=Cluster0'
+    process.env.MONGODB_CONNECTION_STRING
 ).then(() => {
 
     app.listen(port, () => {

@@ -159,3 +159,7 @@ JWT - токен состоит из трех частей:
     //index.js
         import cookieParser from 'cookie-parser';
         app.use(cookieParser())
+
+**Docker**
+
+    
